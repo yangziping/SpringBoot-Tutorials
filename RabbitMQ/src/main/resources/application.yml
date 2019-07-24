@@ -1,0 +1,16 @@
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: fcy
+    password: 123
+    # 是否确认发送的消息已经被消费，成功会进行回调
+    publisher-confirms: true
+    # 这个按照自己需求配置，默认不配置是 /
+    virtual-host: /fcy
+
+# 自定义消息队列名称
+rabbitmq:
+  queue:
+    msg: spring-boot-queue-msg
+    user: spring-boot-queue-user
