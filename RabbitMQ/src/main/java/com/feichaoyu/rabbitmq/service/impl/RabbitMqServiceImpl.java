@@ -2,6 +2,10 @@ package com.feichaoyu.rabbitmq.service.impl;
 
 import com.feichaoyu.rabbitmq.model.User;
 import com.feichaoyu.rabbitmq.service.RabbitMqService;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +18,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RabbitMqServiceImpl
-        // 实现ConfirmCallback接口，这样可以回调
-        implements RabbitTemplate.ConfirmCallback, RabbitMqService {
+        // 实现ConfirmCallback接口和ReturnCallback接口，进行回调
+        implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback, RabbitMqService {
 
-    @Value("${rabbitmq.queue.msg}")
-    private String msgRouting = null;
+    private String msgRouting = "rabbit.hello.world";
+
+    @Value("${rabbitmq.queue.topic}")
+    private String msgTopic = null;
 
     @Value("${rabbitmq.queue.user}")
     private String userRouting = null;
@@ -33,8 +39,15 @@ public class RabbitMqServiceImpl
         System.out.println("发送消息: 【" + msg + "】");
         // 设置回调
         rabbitTemplate.setConfirmCallback(this);
-        // 发送消息，通过msgRouting确定队列
-        rabbitTemplate.convertAndSend(msgRouting, msg);
+        // 设置消息
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setConsumerTag("consumer1");
+        Message message = new Message(msg.getBytes(), messageProperties);
+        // 发送消息，MessagePostProcessor是发送消息后置处理器
+        rabbitTemplate.convertAndSend(msgTopic, msgRouting, message, message1 -> {
+            System.out.println(message1.getMessageProperties().getConsumerTag());
+            return message1;
+        });
     }
 
     // 发送用户
@@ -46,7 +59,7 @@ public class RabbitMqServiceImpl
         rabbitTemplate.convertAndSend(userRouting, user);
     }
 
-    // 回调确认方法，在消费者得到消费时就会回调，而不是消费完才回调
+    // 回调发送成功方法
     @Override
     public void confirm(CorrelationData correlationData,
                         boolean ack, String cause) {
@@ -57,4 +70,9 @@ public class RabbitMqServiceImpl
         }
     }
 
+    // 回调发送失败方法
+    @Override
+    public void returnedMessage(Message message, int i, String s, String s1, String s2) {
+        System.out.println("return exchange: " + s1 + ", routingKey: " + s2 + ", replyCode: " + i + ", replyText: " + s);
+    }
 }

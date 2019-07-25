@@ -4,8 +4,10 @@ spring:
     port: 5672
     username: fcy
     password: 123
-    # 是否确认发送的消息已经被消费，成功会进行回调
+    # 确认消息成功发送，成功会进行回调
     publisher-confirms: true
+    # 对于没有发送成功的消息，会进行回调
+    publisher-returns: true
     # 这个按照自己需求配置，默认不配置是 /
     virtual-host: /fcy
 
@@ -14,3 +16,5 @@ rabbitmq:
   queue:
     msg: spring-boot-queue-msg
     user: spring-boot-queue-user
+    routingKey: rabbit.#
+    topic: my-topic

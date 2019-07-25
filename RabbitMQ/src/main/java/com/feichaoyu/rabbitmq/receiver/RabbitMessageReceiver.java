@@ -1,7 +1,9 @@
 package com.feichaoyu.rabbitmq.receiver;
 
 import com.feichaoyu.rabbitmq.model.User;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.core.ExchangeTypes;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,8 +15,8 @@ public class RabbitMessageReceiver {
 
     // 定义监听字符串队列名称
     @RabbitListener(queues = {"${rabbitmq.queue.msg}"})
-    public void receiveMsg(String msg) {
-        System.out.println("收到消息: 【" + msg + "】");
+    public void receiveMsg(Message message) {
+        System.out.println("收到消息: 【" + new String(message.getBody()) + "】");
     }
 
     // 定义监听用户队列名称
