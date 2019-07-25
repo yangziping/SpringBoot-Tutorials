@@ -2,7 +2,6 @@
 
 ## RabbitMQ
 
-[RabbitMQ]: https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/pom.xml	"RabbitMQ"
-
+[RabbitMQ](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ)
 
 

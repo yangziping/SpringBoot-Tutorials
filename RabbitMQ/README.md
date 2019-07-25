@@ -1,3 +1,5 @@
+[TOC]
+
 # Message Broker和AMQP
 
 Message Broker是一种消息验证、传输、路由的架构模式，其设计目标主要应用于下面这些场景：
