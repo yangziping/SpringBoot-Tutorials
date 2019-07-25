@@ -39,6 +39,8 @@ AMQP是Advanced Message Queuing Protocol的简称，它是一个面向消息中�
 - 可靠性
 - 安全性
 
+![](../images/Snipaste_2019-07-24_11-15-22.png)
+
 
 
 # 消息队列
@@ -76,62 +78,66 @@ channel.basicPublish("", "task_queue",
 
 ## 简单队列
 
-生产者
+[生产者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/simple/Send.java)
 
-
-
-消费者
-
-
-
-
+[消费者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/simple/Recv.java)
 
 ## 工作队列
 
 ### 轮询消费
 
-生产者
+由于公平消费直接在上面盖了，所以需要把自动应答改成`autoAck=true`，去掉`channel.basicQos(1)`
 
+[生产者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/work/Send.java)
 
+[消费者1](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/simple/Recv1.java)
 
-
-
-消费者1
-
-
-
-
-
-消费者2
-
-
+[消费者2](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/simple/Recv2.java)
 
 轮询结果输出：
 
 > 消费者1：
 >
 > [1] recv: hello1
+>
 > [1] done
+>
 > [1] recv: hello3
+>
 > [1] done
+>
 > [1] recv: hello5
+>
 > [1] done
+>
 > [1] recv: hello7
+>
 > [1] done
+>
 > [1] recv: hello9
+>
 > [1] done
 
 > 消费者2：
 >
 > [2] recv: hello0
+>
 > [2] done
+>
 > [2] recv: hello2
+>
 > [2] done
+>
 > [2] recv: hello4
+>
 > [2] done
+>
 > [2] recv: hello6
+>
 > [2] done
+>
 > [2] recv: hello8
+>
 > [2] done
 
 从结果看出，消费者1和消费者2都是消费5个消息，但我们想让消费者1消费的数量是消费者2的一半，因为消费者1效率低，消费者2效率高，所谓能者多劳，就是这个意思。
@@ -142,42 +148,54 @@ channel.basicPublish("", "task_queue",
 
 关闭自动应答`autoAck=false`，加上`channel.basicQos(1)`，表示该消费者在接收到队列里的消息但没有返回确认结果之前,它不会将新的消息分发给它。
 
-消费者1
+[消费者1](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/work/Recv1.java)
 
-
-
-
-
-消费者2
-
-
+[消费者2](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/work/Recv2.java)
 
 结果输出：
 
 > 消费者1：
 >
 > [1] recv: hello0
+>
 > [1] done
+>
 > [1] recv: hello4
+>
 > [1] done
+>
 > [1] recv: hello7
+>
 > [1] done
 
 > 消费者2：
 >
 > [2] recv: hello1
+>
 > [2] done
+>
 > [2] recv: hello2
+>
 > [2] done
+>
 > [2] recv: hello3
+>
 > [2] done
+>
 > [2] recv: hello5
+>
 > [2] done
+>
 > [2] recv: hello6
+>
 > [2] done
+>
 > [2] recv: hello8
+>
 > [2] done
+>
 > [2] recv: hello9
+>
 > [2] done
 
 可以看出，消费者2处理消息数量是消费者1的两倍。
@@ -188,7 +206,7 @@ channel.basicPublish("", "task_queue",
 
 以上两种模式下，一个消息只能发送给一个消费者，如何将一个消息发送给多个消费者呢？就是下面要介绍的发布/订阅模式。
 
-![](images/python-three.png)
+![](../images/python-three.png)
 
 对上图的解释：
 
@@ -202,32 +220,24 @@ exchange有以下几种类型：direct、topic、headers、fanout。在此我们
 
 fanout类型下，Exchange会将所有它接收到的信息分发给和它绑定的队列。因此我们要做的就是绑定不同的队列到Exchange。
 
-生产者
+[生产者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/ps/Send.java)
 
+[消费者1](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/ps/Recv1.java)
 
-
-
-
-消费者1
-
-
-
-
-
-消费者2
-
-
+[消费者2](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/ps/Recv2.java)
 
 结果输出：
 
 > 消费者1：
 >
 > [1] recv: hello
+>
 > [1] done
 
 > 消费者2：
 >
 > [2] recv: hello
+>
 > [2] done
 
 
@@ -240,23 +250,13 @@ fanout类型下，Exchange会将所有它接收到的信息分发给和它绑定
 
 以下图为例，编写代码。
 
-![](images/python-four.png)
+![](../images/python-four.png)
 
-生产者
+[生产者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/routing/Send.java)
 
+[消费者1](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/routing/Recv1.java)
 
-
-
-
-消费者1
-
-
-
-
-
-消费者2
-
-
+[消费者2](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/routing/Recv2.java)
 
 当生产者发送"info"时，消费者1和消费者2都能接收；当生产者发送"error"时，只有消费者2能接收。
 
@@ -273,21 +273,11 @@ Topics模式是一种字符匹配模式，可通过如下通配符匹配：
 
 以商品为例，`goods.#`表示和商品相关的所有操作，`goods.add`表示商品添加，`goods.delete`表示商品删除，编写代码如下。
 
-生产者
+[生产者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/topics/Send.java)
 
+[消费者1](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/topics/Recv1.java)
 
-
-
-
-消费者1
-
-
-
-
-
-消费者2
-
-
+[消费者2](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/topics/Recv2.java)
 
 生产者发送"goods.delete"，只有消费者2能接收。
 
@@ -305,15 +295,9 @@ txRollback
 
 
 
-生产者
+[生产者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/tx/Send.java)
 
-
-
-
-
-消费者
-
-
+[消费者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/tx/Recv.java)
 
 虽然这种模式很简单，但是降低了mq的吞吐量。
 
@@ -336,7 +320,9 @@ if (!channel.waitForConfirms()) {
 
 ```
 
+[生产者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/confirm/Send.java)
 
+[消费者](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/offical_example/confirm/Recv.java)
 
 ## SpringBoot集成
 
@@ -344,9 +330,13 @@ if (!channel.waitForConfirms()) {
 
 只需要配置application.properties或application.yml即可。
 
+[application.yml](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/resources/application.yml)
+
 在`com.feichaoyu.rabbitmq.config.MsgQueue`中，我们配置了消费者队列、交换机、绑定规则。
 
-具体代码都有注释。
+[MsgQueue](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/RabbitMQ/src/main/java/com/feichaoyu/rabbitmq/config/MsgQueue.java)
+
+具体代码都有注释，可以download。
 
 启动工程，在浏览器中输入`localhost:8080/rabbitmq/msg?message=hello`
 
