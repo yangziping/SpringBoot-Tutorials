@@ -35,6 +35,10 @@ public class AsyncConfig {
         taskExecutor.setThreadNamePrefix("async-");
         // 线程池对拒绝任务的处理策略
         taskExecutor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        // 在线程池关闭时等待所有任务完成后才销毁其他Bean
+        taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+        // 在上面的条件下，最多等60s
+        taskExecutor.setAwaitTerminationSeconds(60);
         // 初始化线程池
         taskExecutor.initialize();
         return taskExecutor;
