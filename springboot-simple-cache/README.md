@@ -94,7 +94,13 @@ SpringBoot集成Spring Cache，只需添加如下依赖：
 
 如果使用Spring自带的内存的缓存管理器，需要在appliaction.properties中配置属性：
 
-`spring.cache.type=simple`，这也是SpringBoot的默认设置
+`spring.cache.type=simple`
+
+实际上我们可以通过`debug=true`，看到SpringBoot启动时，默认配置就是SimpleCacheConfiguration。
+
+>SimpleCacheConfiguration matched:
+>      - Cache org.springframework.boot.autoconfigure.cache.SimpleCacheConfiguration automatic cache type (CacheCondition)
+>            - @ConditionalOnMissingBean (types: org.springframework.cache.CacheManager; SearchStrategy: all) did not find any beans (OnBeanCondition)
 
  simple只适合单体应用或者开发环境使用，再或者是一个小系统，通常你的应用是分布式应用，SpringBoot还支持集成更多的缓存服务器。
 
@@ -255,12 +261,14 @@ public void updateUser(Long id, int status) {...}
 
 >`@CacheEvict`只具备删除缓存的功能，不具备加载缓存的功能，只有相应的`@Cacheable`方法被调用后，才会加载最新缓存项。
 
-`@CacheEvict`可以清空缓存中的所有项目，此时使用`allEntries=true`来删除清空缓存。代码如下：
+`@CacheEvict`可以清空缓存中的所有项目，此时使用`allEntries=true`来删除清空缓存，默认为false。代码如下：
 
 ```java
 @CacheEvict(cacheNames="user", allEntries=true)
 public void updateUser(Long id, int status) {...}
 ```
+
+`@CacheEvict`还有一个属性beforeInnovation表示是否在方法执行之前移除缓存中的数据，默认为false，即在方法执行之后移除缓存中的数据。
 
 
 
