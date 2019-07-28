@@ -115,11 +115,11 @@ redisTemplate.boundzSetOps("zset");
 
 ## Spring Boot使用Redis
 
-配置文件：[application.yml]()
+配置文件：[application.yml](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/springboot-redis-cache/src/main/resources/application.yml)
 
 这里我们配置了连接池和服务器的属性，用以连接Redis服务器，这样Spring Boot的自动装配机制就会读取这些配置来生成有关Redis的操作对象，这里它会自动生成RedisConnectionFactory、RedisTemplate、StringRedisTemplate 等常用的Redis对象。
 
-修改默认的序列化器：[RedisConfig]()
+修改默认的序列化器：[RedisConfig](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/springboot-redis-cache/src/main/java/com/feichaoyu/redis/config/RedisConfig.java)
 
 我们上面在`RedisConfig`中配置的`RedisTemplate`只有使用它自身注入之后的操作，才可以在数据展示时看到json格式的对象，但是用缓存注解是不生效的。需要再配置`RedisCacheConfiguration`才能生效。
 
@@ -137,7 +137,7 @@ Spring Boot自带的Redis缓存非常容易使用，但由于通过网络访问�
 
 首先，创建一个新的缓存管理器，命名为`TwoLevelCacheManager`，继承了Spring Boot的`RedisCacheManager`，重载`decorateCache`方法。返回的是新创建的`RedisAndLocalCache`缓存实现。
 
-[TwoLevelCacheManager]()
+[TwoLevelCacheManager](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/springboot-redis-cache/src/main/java/com/feichaoyu/redis/config/TwoLevelCacheManager.java)
 
 在Spring Cache中，在缓存管理器中创建好每个缓存后，都会调用`decorateCache`方法，这样缓存管理器子类就有机会实现自己的扩展。在这段代码中，返回了自定义的`RedisAndLocalCache`实现。`publishMessage`方法提供给Cache，用于在缓存更新时使用Redis的消息机制通知其他分布式节点的一级缓存。`receiver`方法对应于`publishMessage`方法，当收到消息后，会清空一级缓存。
 
@@ -150,7 +150,7 @@ Spring Boot自带的Redis缓存非常容易使用，但由于通过网络访问�
 - `evict`：同put操作一样，调用父类处理，清空对应的缓存，同时广播消息。
 - `putlfAbsent`：同put操作一样，调用父类实现，同时广播消息。
 
-[RedisAndLocalCache]()
+[RedisAndLocalCache](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/springboot-redis-cache/src/main/java/com/feichaoyu/redis/config/RedisAndLocalCache.java)
 
 变量`local`代表了一个简单的缓存实现，使用了`ConcurrentHashMap`，其`get`方法有如下逻辑实现：
 
@@ -187,7 +187,10 @@ Spring Boot自带的Redis缓存非常容易使用，但由于通过网络访问�
 结果输出：
 
 >Hibernate: select user0_.id as id1_0_0_, user0_.address as address2_0_0_, user0_.age as age3_0_0_, user0_.name as name4_0_0_ from user user0_ where user0_.id=?
+>
 >从Redis缓存获取
+>
 >从本地缓存获取
+>
 >从本地缓存获取
 
