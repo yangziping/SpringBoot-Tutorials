@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Spring Security Example </title>
+</head>
+<body>
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<h3>表单登录</h3>
+<form th:action="@{/authentication/form}" method="post">
+    <table>
+        <tr>
+            <td>用户名:</td>
+            <td><input type="text" name="username"></td>
+        </tr>
+        <tr>
+            <td>密码:</td>
+            <td><input type="password" name="password"></td>
+        </tr>
+        <tr>
+            <td>图形验证码:</td>
+            <td>
+                <input type="text" name="imageCode">
+                <img src="/code/image?width=200">
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2'><input name="remember-me" type="checkbox" value="true"/>记住我</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">登录</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<h3>短信登录</h3>
+<form th:action="@{/authentication/mobile}" method="post">
+    <table>
+        <tr>
+            <td>手机号:</td>
+            <td><input type="text" name="mobile" value="13012345678"></td>
+        </tr>
+        <tr>
+            <td>短信验证码:</td>
+            <td>
+                <input type="text" name="smsCode">
+                <a href="/code/sms?mobile=13012345678">发送验证码</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">登录</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>
