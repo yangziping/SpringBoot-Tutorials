@@ -25,3 +25,12 @@
 
 
 ## [全局异常处理及定制错误页面](https://github.com/FeiChaoyu/SpringBoot-Tutorials/tree/master/springboot-global-exception-handler)
+
+
+
+## [Spring Security深度应用](https://github.com/FeiChaoyu/SpringBoot-Tutorials/tree/master/springboot-spring-security)
+
+
+
+## [Spring Data Rest](https://github.com/FeiChaoyu/SpringBoot-Tutorials/tree/master/springboot-spring-data-rest)
+
