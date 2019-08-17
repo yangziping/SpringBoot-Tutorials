@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/study?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: fcy123
+    # spring2.0以上的数据源已经不是tomcat了，所以下面的配置不会生效
+    tomcat:
+      #隔离级别数字配置的含义：
+      #-1数据库默认隔离级别
+      #1未提交读
+      #2读写提交
+      #4可重复读
+      #8串行化
+      default-transaction-isolation: 2
+
+    # spring2.0以上换成了hikari，性能方面 hikari>druid>tomcat>dbcp>c3p0，hikari的高性能得益于最大限度的避免锁竞争
+    hikari:
+      transaction-isolation: TRANSACTION_REPEATABLE_READ
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+# 打印spring相关的日志
+logging:
+  level:
+    org:
+      springframework: debug

@@ -4,7 +4,7 @@ REST（Representational State Transfer）是一种Web软件架构风格，它是
 
 在前后端分离项目中，一个设计良好的Web软件架构必然要满足REST风格。
 
-在Spring MVC框架中，开发者可以通过`@RestController`注解开发一个RESTful服务，不过，Spring Boot 对此提供了自动化配置方案，开发者只需要添加相关依赖就能快速构建一个RESTful服务。
+在Spring MVC框架中，开发者可以通过@RestController注解开发一个RESTful服务，不过，Spring Boot 对此提供了自动化配置方案，开发者只需要添加相关依赖就能快速构建一个RESTful服务。
 
 # Spring Data REST
 
@@ -18,11 +18,11 @@ Spring Data REST的配置在`org.springframework.data.rest.webmvc.config.Reposit
 
 通过SpringBootRepositoryRestMvcConfiguration类的源码我们可以得出，Spring Boot已经为我们自动配置RepositoryRestConfiguration，所以在Spring Boot 中使用Spring Data REST只需引入`spring-boot-starter-data-rest`的依赖，无须任何配置即可使用。
 
-在application.properties中配置以“`spring.data.rest`”为前缀的属性来配置RepositoryRestConfiguration。
+在application.properties中配置以`spring.data.rest`为前缀的属性来配置RepositoryRestConfiguration。
 
 ## 使用
 
-启动项目，打开PostMan测试。
+启动项目，打开Postman测试。
 
 查询所有：`localhost:8080/users` GET
 
@@ -50,7 +50,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 }
 ```
 
-`path`属性表示将所有请求路径中的`users`都修改为`user`，`collectionResourceRel`属性表示将返回的JSON集合中User集合的key修改为`user`；`itemResourceRel`表示将返回的JSON集合中的单个User的key修改为`user`。
+`path`属性表示将所有请求路径中的`users`都修改为`user`
+
+`collectionResourceRel`属性表示将返回的JSON集合中User集合的key修改`user`
+
+`itemResourceRel`表示将返回的JSON集合中的单个User的key修改为`user`
 
 
 
@@ -67,7 +71,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 }
 ```
 
-自定义查询只需要在XxxRepository中定义相关查询方法即可，方法定义好之后可以不添加`@RestResource`注解，默认路径就是方法名。以上面自定义的查询方法为例，若不添加@RestResource注解，则默认该方法的调用路径为`localhost:8080/user/search/findByAddress?address=xxx`。反之，若添加了@RestResource注解，那么调用路径为`localhost:8080/user/search/address?address=xxx`。
+自定义查询只需要在XxxRepository中定义相关查询方法即可，方法定义好之后可以不添加@RestResource注解，默认路径就是方法名。以上面自定义的查询方法为例，若不添加@RestResource注解，则默认该方法的调用路径为`localhost:8080/user/search/findByAddress?address=xxx`。反之，若添加了@RestResource注解，那么调用路径为`localhost:8080/user/search/address?address=xxx`。
 
 用户可以直接访问`localhost:8080/user/search`查看该实体类暴露出来了哪些查询方法，默认情况下，在查询方法展示时使用的路径是方法名，通过@RestResource注解中的`rel`属性可以对这里的路径进行重定义。
 
