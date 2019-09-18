@@ -313,7 +313,7 @@ logging:
 
 >Spring Boot2.0以上默认使用的不再是tomcat数据源，而是使用hikari作为数据源。因此配置方式也改变了。
 
-具体的配置可以看我的配置文件 [application.yml]()
+具体的配置可以看我的配置文件 [application.yml](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/springboot-transaction/src/main/resources/application.yml)
 
 ------
 
