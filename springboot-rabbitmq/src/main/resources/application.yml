@@ -1,15 +1,15 @@
 spring:
   rabbitmq:
-    host: 127.0.0.1
+    host: 101.200.159.42
     port: 5672
-    username: fcy
-    password: 123
+    username: admin
+    password: 123456
     # 确认消息成功发送，成功会进行回调
     publisher-confirms: true
     # 对于没有发送成功的消息，会进行回调
     publisher-returns: true
     # 这个按照自己需求配置，默认不配置是 /
-    virtual-host: /fcy
+    virtual-host: /
 
 # 自定义消息队列名称
 rabbitmq:

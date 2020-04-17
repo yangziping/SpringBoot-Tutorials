@@ -132,7 +132,13 @@ public class HttpClientUtils {
         httpGet.setConfig(requestConfig);
 
         // 设置请求头
-        packageHeader(headers, httpGet);
+        if (headers == null) {
+            Map<String, String> head = new HashMap<>();
+            head.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0");
+            packageHeader(head, httpGet);
+        } else {
+            packageHeader(headers, httpGet);
+        }
 
         // 创建httpResponse对象
         CloseableHttpResponse httpResponse = null;

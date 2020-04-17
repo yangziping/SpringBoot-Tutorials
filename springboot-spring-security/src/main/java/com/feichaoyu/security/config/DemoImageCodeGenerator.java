@@ -11,13 +11,12 @@ import org.springframework.web.context.request.ServletWebRequest;
 //@Component("imageValidateCodeGenerator")
 public class DemoImageCodeGenerator implements ValidateCodeGenerator {
 
-
     @Override
     public ImageCode generate(ServletWebRequest request) {
         System.out.println("更高级的图形验证码生成代码");
         System.out.println("DemoImageCodeGenerator.generate");
         System.out.println("request = " + request);
-        if(request==null) return null;
+        if (request == null) return null;
         return null;
     }
 

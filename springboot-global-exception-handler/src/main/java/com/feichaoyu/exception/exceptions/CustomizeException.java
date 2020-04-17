@@ -4,7 +4,7 @@ package com.feichaoyu.exception.exceptions;
  * @Author feichaoyu
  * @Date 2019/8/5
  */
-public class CustomizeException extends RuntimeException{
+public class CustomizeException extends RuntimeException {
 
     private String message;
     private Integer code;

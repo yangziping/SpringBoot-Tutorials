@@ -70,7 +70,7 @@ public class RedisApplicationTests {
     }
 
     @Test
-    public void test3(){
+    public void test3() {
         String carJson =
                 "{ \"brand\" : \"Mercedes\", \"doors\" : 5," +
                         "  \"owners\" : [\"John\", \"Jack\", \"Jill\"]," +
@@ -88,7 +88,6 @@ public class RedisApplicationTests {
          * }
          */
         ObjectMapper objectMapper = new ObjectMapper();
-
 
         try {
 
@@ -149,18 +148,18 @@ class CarDeserializer extends StdDeserializer<Car> {
     @Override
     public Car deserialize(JsonParser parser, DeserializationContext deserializer) throws IOException {
         Car car = new Car();
-        while(!parser.isClosed()){
+        while (!parser.isClosed()) {
             JsonToken jsonToken = parser.nextToken();
 
-            if(JsonToken.FIELD_NAME.equals(jsonToken)){
+            if (JsonToken.FIELD_NAME.equals(jsonToken)) {
                 String fieldName = parser.getCurrentName();
                 System.out.println(fieldName);
 
                 jsonToken = parser.nextToken();
 
-                if("brand".equals(fieldName)){
+                if ("brand".equals(fieldName)) {
                     car.setBrand(parser.getValueAsString());
-                } else if ("doors".equals(fieldName)){
+                } else if ("doors".equals(fieldName)) {
                     car.setDoors(parser.getValueAsInt());
                 }
             }

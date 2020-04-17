@@ -18,24 +18,22 @@ import java.util.Map;
 @RequestMapping("/rabbitmq")
 public class RabbitMqController {
 
-    // 注入Spring Boot自定生成的对象
     @Autowired
     private RabbitMqService rabbitMqService = null;
 
-    @GetMapping("/msg") // 字符串
+    @GetMapping("/msg")
     public Map<String, Object> msg(String message) {
         rabbitMqService.sendMsg(message);
         return resultMap("message", message);
     }
 
-    @GetMapping("/user") // 用户
+    @GetMapping("/user")
     public Map<String, Object> user(Long id, String userName, String note) {
         User user = new User(id, userName, note);
         rabbitMqService.sendUser(user);
         return resultMap("user", user);
     }
 
-    // 结果Map
     private Map<String, Object> resultMap(String key, Object obj) {
         Map<String, Object> result = new HashMap<>();
         result.put("success", true);

@@ -9,7 +9,7 @@ spring:
       ddl-auto: update
     show-sql: true
   batch:
-#    initialize-schema: always
+    #    initialize-schema: always
     job:
       # 禁止Spring Batch自动执行。默认情况下，当项目启动时就会执行配置好的批处理操作，如果是false，则需要用户手动触发执行
       enabled:

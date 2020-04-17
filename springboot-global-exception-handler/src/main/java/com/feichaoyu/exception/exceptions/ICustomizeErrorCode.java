@@ -5,6 +5,7 @@ package com.feichaoyu.exception.exceptions;
  * @Date 2019/8/5
  */
 public interface ICustomizeErrorCode {
-    String getMessage() ;
+    String getMessage();
+
     Integer getCode();
 }

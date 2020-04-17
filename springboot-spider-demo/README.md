@@ -1,2 +1,2 @@
-主要学习一下httpclient的封装吧，最后也没爬取成功，最初只是为了学习http看的，不浪费时间在这上面了
-[HttpClientUtils]()
+主要学习一下httpclient的封装吧，爬取的时候需要设置User-Agent请求头
+[HttpClientUtils](https://github.com/FeiChaoyu/SpringBoot-Tutorials/blob/master/springboot-spider-demo/src/main/java/com/feichaoyu/spider/util/HttpClientUtils.java)

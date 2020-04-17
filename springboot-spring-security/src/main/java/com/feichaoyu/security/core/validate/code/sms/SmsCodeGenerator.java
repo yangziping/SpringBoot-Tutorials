@@ -32,7 +32,5 @@ public class SmsCodeGenerator implements ValidateCodeGenerator {
         this.securityProperties = securityProperties;
     }
 
-
-
 }
 

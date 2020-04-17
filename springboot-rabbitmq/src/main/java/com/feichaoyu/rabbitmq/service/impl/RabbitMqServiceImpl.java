@@ -2,9 +2,7 @@ package com.feichaoyu.rabbitmq.service.impl;
 
 import com.feichaoyu.rabbitmq.model.User;
 import com.feichaoyu.rabbitmq.service.RabbitMqService;
-import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -29,11 +27,9 @@ public class RabbitMqServiceImpl
     @Value("${rabbitmq.queue.user}")
     private String userRouting = null;
 
-    // 注入由Spring Boot自动配置的RabbitTemplate
     @Autowired
     private RabbitTemplate rabbitTemplate = null;
 
-    // 发送消息
     @Override
     public void sendMsg(String msg) {
         System.out.println("发送消息: 【" + msg + "】");
@@ -50,7 +46,6 @@ public class RabbitMqServiceImpl
         });
     }
 
-    // 发送用户
     @Override
     public void sendUser(User user) {
         System.out.println("发送用户消息: 【" + user + "】");
@@ -59,7 +54,13 @@ public class RabbitMqServiceImpl
         rabbitTemplate.convertAndSend(userRouting, user);
     }
 
-    // 回调发送成功方法
+    /**
+     * 回调发送成功方法
+     *
+     * @param correlationData
+     * @param ack
+     * @param cause
+     */
     @Override
     public void confirm(CorrelationData correlationData,
                         boolean ack, String cause) {
@@ -70,7 +71,15 @@ public class RabbitMqServiceImpl
         }
     }
 
-    // 回调发送失败方法
+    /**
+     * 回调发送失败方法
+     *
+     * @param message
+     * @param i
+     * @param s
+     * @param s1
+     * @param s2
+     */
     @Override
     public void returnedMessage(Message message, int i, String s, String s1, String s2) {
         System.out.println("return exchange: " + s1 + ", routingKey: " + s2 + ", replyCode: " + i + ", replyText: " + s);

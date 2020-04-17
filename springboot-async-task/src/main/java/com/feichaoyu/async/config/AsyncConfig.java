@@ -17,10 +17,11 @@ public class AsyncConfig {
 
     /**
      * 自定义线程池
+     *
      * @return
      */
     @Bean
-    public ThreadPoolTaskExecutor threadPoolTaskExecutor(){
+    public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
         // 定义线程池
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         // 基本线程数

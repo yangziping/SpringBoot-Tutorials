@@ -24,13 +24,14 @@ public class TwoLevelCacheManager extends RedisCacheManager {
 
     private RedisTemplate redisTemplate;
 
-    public TwoLevelCacheManager(RedisTemplate redisTemplate,RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration) {
-        super(cacheWriter,defaultCacheConfiguration);
+    public TwoLevelCacheManager(RedisTemplate redisTemplate, RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration) {
+        super(cacheWriter, defaultCacheConfiguration);
         this.redisTemplate = redisTemplate;
     }
 
     /**
      * 使用自己创建的RedisAndLocalCache代替Spring Boot自带的RedisCache
+     *
      * @param cache
      * @return
      */
@@ -41,6 +42,7 @@ public class TwoLevelCacheManager extends RedisCacheManager {
 
     /**
      * 通过其他分布式节点，缓存改变
+     *
      * @param cacheName
      */
     public void publishMessage(String cacheName) {
@@ -49,11 +51,12 @@ public class TwoLevelCacheManager extends RedisCacheManager {
 
     /**
      * 接受一个消息清空本地缓存
+     *
      * @param name
      */
     public void receiver(String name) {
         RedisAndLocalCache cache = ((RedisAndLocalCache) this.getCache(name));
-        if(cache!=null){
+        if (cache != null) {
             cache.clearLocal();
         }
     }
