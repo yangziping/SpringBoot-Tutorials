@@ -194,3 +194,6 @@ Spring Boot自带的Redis缓存非常容易使用，但由于通过网络访问�
 >
 >从本地缓存获取
 
+## Redis 分布式锁
+见代码com.feichaoyu.redis.distributedlock.RedisDistributedLock
+
