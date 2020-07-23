@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Component
-public class RedisDistributedLock {
+public class RedisDistributedLockDemo {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -50,6 +50,7 @@ public class RedisDistributedLock {
             // 2.业务，比如关闭订单
 
             // 3.删除对应key
+            // TODO：需要对比value是否是自己的value，才释放。可以使用lua脚本将校验和删除放在一起执行
             redisTemplate.delete("lock");
         } else {
             log.info("没有获得分布式锁:{}", "lock");
@@ -71,6 +72,7 @@ public class RedisDistributedLock {
             // 2.业务，比如关闭订单
 
             // 3.删除对应key
+            // TODO：需要对比value是否是自己的value，才释放。可以使用lua脚本将校验和删除放在一起执行
             redisTemplate.delete("lock");
         } else {
             // 未获取到锁，继续判断，判断时间戳，看是否可以重置并获取到锁
@@ -89,6 +91,7 @@ public class RedisDistributedLock {
                     // 2.业务，比如关闭订单
 
                     // 3.删除对应key
+                    // TODO：需要对比value是否是自己的value，才释放。可以使用lua脚本将校验和删除放在一起执行
                     redisTemplate.delete("lock");
                 } else {
                     log.info("没有获取到分布式锁:{}", "lock");

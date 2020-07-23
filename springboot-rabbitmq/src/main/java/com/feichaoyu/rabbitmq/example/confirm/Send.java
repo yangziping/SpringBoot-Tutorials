@@ -32,7 +32,7 @@ public class Send {
 
         channel.basicPublish("", QUEUE_NAME, null, msg.getBytes());
 
-        // 方法1
+        // 方法1：异步确认
         channel.addConfirmListener(new ConfirmListener() {
             @Override
             public void handleAck(long deliveryTag, boolean multiple) throws IOException {
@@ -45,12 +45,15 @@ public class Send {
             }
         });
 
-        // 方法2
+        // 方法2：单个确认
         if (!channel.waitForConfirms()) {
             System.out.println("failed");
         } else {
             System.out.println("ok");
         }
+
+        // 方法3：批量确认（有一条消息失败，就要将全部消息补发）
+        channel.waitForConfirmsOrDie();
 
         channel.close();
         connection.close();
